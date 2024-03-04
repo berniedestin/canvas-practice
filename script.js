@@ -33,53 +33,111 @@ class Circle{
         this.dx = dx;
         this.dy = dy;
         this.rad = rad;
+        // pre-set properties
+        this.isDirectionChanged = false;
+        this.fillColorR = Math.random() * 255;
+        this.fillColorG = Math.random() * 255;
+        this.fillColorB = Math.random() * 255;
+        this.fillColorA = Math.random();
+        this.strokeColorR = Math.random() * 255;
+        this.strokeColorG = Math.random() * 255;
+        this.strokeColorB = Math.random() * 255;
         
     }
+    draw(){
+        context.beginPath();
+        context.arc(this.x,this.y, this.rad, 0, Math.PI *2,true);
+        if(this.isDirectionChanged){
+            this.fillColorR = Math.random() * 255;
+            this.fillColorG = Math.random() * 255;
+            this.fillColorB = Math.random() * 255;
+            this.strokeColorR = Math.random() * 255;
+            this.strokeColorG = Math.random() * 255;
+            this.strokeColorB = Math.random() * 255;
+            this.isDirectionChanged = false;
+        }
+        context.fillStyle = `rgba(${this.fillColorR},${this.fillColorG},${this.fillColorB},${this.fillColorA})`;
+        context.fill();
+        context.strokeStyle = `rgba(${this.strokeColorR},${this.strokeColorG},${this.strokeColorB},1)`;
+        context.stroke();
+    }
+    update(){
+        if(this.x >= window.innerWidth - this.rad || this.x <= this.rad){
+            this.dx = this.dx * -1;
+            this.isDirectionChanged = true;
+        }
+        if(this.y >= window.innerHeight - this.rad || this.y <= this.rad ){
+            this.dy = this.dy * -1;
+            this.isDirectionChanged = true;
+        }
+        this.x += this.dx;
+        this.y += this.dy;
+        this.draw();
+    }
+
 }
 
-let x = 300;
-let dx = 5;
-let y = 300;
-let dy = 5;
-let rad = 30;
-let isDirectionChanged = false;
+let testCircle = new Circle(300,900,5,5,30);
 
-let fillColorR = Math.random() * 255;
-let fillColorG = Math.random() * 255;
-let fillColorB = Math.random() * 255;
-let strokeColorR = Math.random() * 255;
-let strokeColorG = Math.random() * 255;
-let strokeColorB = Math.random() * 255;
+
+// let x = 300;
+// let dx = 5;
+// let y = 300;
+// let dy = 5;
+// let rad = 30;
+// let isDirectionChanged = false;
+
+// let fillColorR = Math.random() * 255;
+// let fillColorG = Math.random() * 255;
+// let fillColorB = Math.random() * 255;
+// let strokeColorR = Math.random() * 255;
+// let strokeColorG = Math.random() * 255;
+// let strokeColorB = Math.random() * 255;
+
+let circleArray = [];
+for(let i = 0; i <50;i++){
+    let rad = (Math.random()*30) +30;
+    let x = (Math.random() * (window.innerWidth - (2 * rad))) + rad;
+    let y = (Math.random() * (window.innerHeight - (2 * rad))) + rad;
+    let dx = Math.random() > 0.5 ? -3 - (Math.random() * 3): 3 + (Math.random() * 3);
+    let dy = Math.random() > 0.5 ? -3 - (Math.random() * 3): 3 + (Math.random() * 3);
+    circleArray.push(new Circle(x,y,dx,dy,rad))
+}
 
 function animate(){
     requestAnimationFrame(animate);
     context.clearRect(0,0,window.innerWidth,window.innerHeight);
+    //testCircle.update(); //this works
 
-    context.beginPath();
-    context.arc(x,y, rad, 0, Math.PI *2,true);
-    if(isDirectionChanged){
-        fillColorR = Math.random() * 255;
-        fillColorG = Math.random() * 255;
-        fillColorB = Math.random() * 255;
-        strokeColorR = Math.random() * 255;
-        strokeColorG = Math.random() * 255;
-        strokeColorB = Math.random() * 255;
-        isDirectionChanged = false;
-    }
-    context.fillStyle = `rgba(${fillColorR},${fillColorG},${fillColorB},1)`;
-    context.fill();
-    context.strokeStyle = `rgba(${strokeColorR},${strokeColorG},${strokeColorB},1)`;
-    context.stroke();
+    circleArray.forEach((circle)=>{
+        circle.update();
+    })
 
-    if(x >= window.innerWidth - rad || x <= rad){
-        dx = dx * -1;
-        isDirectionChanged = true;
-    }else if(y >= window.innerHeight - rad || y <= rad ){
-        dy = dy * -1;
-        isDirectionChanged = true;
-    }
-    x += dx;
-    y += dy;
+    // context.beginPath();
+    // context.arc(x,y, rad, 0, Math.PI *2,true);
+    // if(isDirectionChanged){
+    //     fillColorR = Math.random() * 255;
+    //     fillColorG = Math.random() * 255;
+    //     fillColorB = Math.random() * 255;
+    //     strokeColorR = Math.random() * 255;
+    //     strokeColorG = Math.random() * 255;
+    //     strokeColorB = Math.random() * 255;
+    //     isDirectionChanged = false;
+    // }
+    // context.fillStyle = `rgba(${fillColorR},${fillColorG},${fillColorB},1)`;
+    // context.fill();
+    // context.strokeStyle = `rgba(${strokeColorR},${strokeColorG},${strokeColorB},1)`;
+    // context.stroke();
+
+    // if(x >= window.innerWidth - rad || x <= rad){
+    //     dx = dx * -1;
+    //     isDirectionChanged = true;
+    // }else if(y >= window.innerHeight - rad || y <= rad ){
+    //     dy = dy * -1;
+    //     isDirectionChanged = true;
+    // }
+    // x += dx;
+    // y += dy;
 }
 //animate();
 
