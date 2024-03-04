@@ -26,6 +26,32 @@ const context = canvas.getContext('2d');
 // context.fill();
 // context.strokeStyle = 'red';
 // context.stroke();
+
+let colorPallet = [
+    '#A08ED1',
+    '#D1AF8E',
+    '#6AB871',
+    '#553F91',
+    '#0F5215'
+];
+let maxRadius = 50;
+
+let mouse = {
+    x: undefined,
+    y: undefined
+}
+
+window.addEventListener('mousemove', (event)=>{
+    mouse.x = event.x;
+    mouse.y = event.y;
+});
+
+window.addEventListener('resize',()=>{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    init();
+});
+
 class Circle{
     constructor(x,y,dx,dy,rad){
         this.x = x;
@@ -33,33 +59,23 @@ class Circle{
         this.dx = dx;
         this.dy = dy;
         this.rad = rad;
+        this.minRadius = rad;
+        
         // pre-set properties
         this.isDirectionChanged = false;
-        this.fillColorR = Math.random() * 255;
-        this.fillColorG = Math.random() * 255;
-        this.fillColorB = Math.random() * 255;
-        this.fillColorA = Math.random();
-        this.strokeColorR = Math.random() * 255;
-        this.strokeColorG = Math.random() * 255;
-        this.strokeColorB = Math.random() * 255;
+        this.fillColor = colorPallet[Math.floor(Math.random()*colorPallet.length)];
         
     }
     draw(){
         context.beginPath();
         context.arc(this.x,this.y, this.rad, 0, Math.PI *2,true);
         if(this.isDirectionChanged){
-            this.fillColorR = Math.random() * 255;
-            this.fillColorG = Math.random() * 255;
-            this.fillColorB = Math.random() * 255;
-            this.strokeColorR = Math.random() * 255;
-            this.strokeColorG = Math.random() * 255;
-            this.strokeColorB = Math.random() * 255;
+            // some code here when direction changes
             this.isDirectionChanged = false;
         }
-        context.fillStyle = `rgba(${this.fillColorR},${this.fillColorG},${this.fillColorB},${this.fillColorA})`;
+        context.fillStyle = this.fillColor;
         context.fill();
-        context.strokeStyle = `rgba(${this.strokeColorR},${this.strokeColorG},${this.strokeColorB},1)`;
-        context.stroke();
+    
     }
     update(){
         if(this.x >= window.innerWidth - this.rad || this.x <= this.rad){
@@ -73,36 +89,34 @@ class Circle{
         this.x += this.dx;
         this.y += this.dy;
         this.draw();
+
+        if(mouse.x - this.x < 50 && mouse.x - this.x > -50 &&
+            mouse.y - this.y < 50 && mouse.y - this.y > -50 &&
+            this.rad < maxRadius){
+            this.rad += 1;
+        }else if(this.rad > this.minRadius){
+            this.rad -= 1;
+        }
     }
 
 }
 
-let testCircle = new Circle(300,900,5,5,30);
 
 
-// let x = 300;
-// let dx = 5;
-// let y = 300;
-// let dy = 5;
-// let rad = 30;
-// let isDirectionChanged = false;
-
-// let fillColorR = Math.random() * 255;
-// let fillColorG = Math.random() * 255;
-// let fillColorB = Math.random() * 255;
-// let strokeColorR = Math.random() * 255;
-// let strokeColorG = Math.random() * 255;
-// let strokeColorB = Math.random() * 255;
 
 let circleArray = [];
-for(let i = 0; i <50;i++){
-    let rad = (Math.random()*30) +30;
-    let x = (Math.random() * (window.innerWidth - (2 * rad))) + rad;
-    let y = (Math.random() * (window.innerHeight - (2 * rad))) + rad;
-    let dx = Math.random() > 0.5 ? -3 - (Math.random() * 3): 3 + (Math.random() * 3);
-    let dy = Math.random() > 0.5 ? -3 - (Math.random() * 3): 3 + (Math.random() * 3);
-    circleArray.push(new Circle(x,y,dx,dy,rad))
+function init(){
+    circleArray = [];
+    for(let i = 0; i <800;i++){
+        let rad = (Math.random()*4) +1;
+        let x = (Math.random() * (window.innerWidth - (2 * rad))) + rad;
+        let y = (Math.random() * (window.innerHeight - (2 * rad))) + rad;
+        let dx = Math.random() > 0.5 ? -1 - (Math.random() * 1): 1 + (Math.random() * 1);
+        let dy = Math.random() > 0.5 ? -1 - (Math.random() * 1): 1 + (Math.random() * 1);
+        circleArray.push(new Circle(x,y,dx,dy,rad))
+    }
 }
+init();
 
 function animate(){
     requestAnimationFrame(animate);
@@ -113,33 +127,10 @@ function animate(){
         circle.update();
     })
 
-    // context.beginPath();
-    // context.arc(x,y, rad, 0, Math.PI *2,true);
-    // if(isDirectionChanged){
-    //     fillColorR = Math.random() * 255;
-    //     fillColorG = Math.random() * 255;
-    //     fillColorB = Math.random() * 255;
-    //     strokeColorR = Math.random() * 255;
-    //     strokeColorG = Math.random() * 255;
-    //     strokeColorB = Math.random() * 255;
-    //     isDirectionChanged = false;
-    // }
-    // context.fillStyle = `rgba(${fillColorR},${fillColorG},${fillColorB},1)`;
-    // context.fill();
-    // context.strokeStyle = `rgba(${strokeColorR},${strokeColorG},${strokeColorB},1)`;
-    // context.stroke();
-
-    // if(x >= window.innerWidth - rad || x <= rad){
-    //     dx = dx * -1;
-    //     isDirectionChanged = true;
-    // }else if(y >= window.innerHeight - rad || y <= rad ){
-    //     dy = dy * -1;
-    //     isDirectionChanged = true;
-    // }
-    // x += dx;
-    // y += dy;
 }
-//animate();
+animate();
+
+// **********************************************************************************
 
 function drawCircles(number, size){
 

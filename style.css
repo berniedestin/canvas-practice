@@ -13,6 +13,7 @@ div{
 #render{
     z-index: -1;
     position: fixed;
+    background-color: #f4e7db;
     /* display: none; */
     /* border: black 1px solid; */
 }
