@@ -9,6 +9,13 @@
 </head>
 <body>
     <canvas id="render"></canvas>
-    
+    <div>
+        <dialog id="modalTest">
+            <h1>Here's my modal test</h1>
+            <p>This is some pertinent text</p>
+            <button onclick="modalTest.close()">Close</button>
+        </dialog>
+        <button onclick="modalTest.showModal()">Open Modal</button>
+    </div>
 </body>
 </html>

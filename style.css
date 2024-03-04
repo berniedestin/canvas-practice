@@ -1,7 +1,23 @@
+*{
+    font-family: monospace;
+}
 body{
     margin: 0px;
 }
 
+div{
+    z-index: 1;
+
+}
+
 #render{
+    z-index: -1;
+    position: fixed;
+    /* display: none; */
     /* border: black 1px solid; */
+}
+
+#modalTest{
+    border: 1px black solid;
+    border-radius: 1rem;
 }
