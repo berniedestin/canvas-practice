@@ -3,10 +3,19 @@
 }
 body{
     margin: 0px;
+    background-color: #f4e7db;
 }
 
-div{
-    z-index: 1;
+div#mainDisplay{
+    /* z-index: 1; */
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* height: 99vh;
+    width: 99vw; */
 
 }
 
@@ -14,7 +23,7 @@ div{
     z-index: -1;
     position: fixed;
     background-color: #f4e7db;
-    /* display: none; */
+    display: none;
     /* border: black 1px solid; */
 }
 
@@ -24,12 +33,41 @@ div{
     border-radius: 1rem;
     scale: 0;
     opacity: 0;
+    background-color: #D1AF8E;
     transition: all 1s;
+    
+}
+#modalTest>div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+h1{
+    margin: 0px;
 }
 #modalTest::backdrop{
     /* background-color: blue; */
+
 }
+
 #modalTest[open]{
     scale: 1;
     opacity: 1;
+}
+#showMeOptions{
+    font-size: 1.5rem;
+}
+button{
+    padding: .5rem 1rem;
+    border-radius: .4rem;
+    border: #553F91 2px solid;
+    color: #553F91;
+    background-color: #cbc7d3;
+    margin: .5rem;
+
+}
+button:hover{
+    background-color: #c0b9d1;
+
 }

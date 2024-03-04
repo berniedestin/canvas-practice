@@ -1,6 +1,16 @@
 const canvas = document.getElementById('render');
+const orbsGrowBtn = document.getElementById('orbsGrow');
+const modalTest = document.getElementById('modalTest');
+// const mainDisplay = document.getElementById('mainDisplay');
 
-let instances = 50;
+// mainDisplay.width = '100vh';
+// mainDisplay.height = '100vh';
+let showOrbsGrow = false;
+
+
+
+let instances = 50; //used by old functions down below
+
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -50,6 +60,16 @@ window.addEventListener('resize',()=>{
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     init();
+});
+
+orbsGrowBtn.addEventListener('click',()=>{
+    if(showOrbsGrow){
+        canvas.style.display = 'none';
+    }else{
+        canvas.style.display = 'block';
+    }
+    showOrbsGrow = !showOrbsGrow;
+    modalTest.close();
 });
 
 class Circle{
@@ -118,8 +138,8 @@ function init(){
 }
 init();
 
-function animate(){
-    requestAnimationFrame(animate);
+function animateOrbsGrow(){
+    requestAnimationFrame(animateOrbsGrow);
     context.clearRect(0,0,window.innerWidth,window.innerHeight);
     //testCircle.update(); //this works
 
@@ -128,7 +148,15 @@ function animate(){
     })
 
 }
-animate();
+
+animateOrbsGrow();
+
+function main(){
+    if(showOrbsGrow){
+        animateOrbsGrow();
+    }
+    main();
+}
 
 // **********************************************************************************
 
