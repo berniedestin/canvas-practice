@@ -1,2 +1,3 @@
 # canvas-practice
-This will allow me to practice and demonstrate my skills with HTML5 canvas elements
+
+This is my exploration of a few new (to me) features of HTML5, namely `<canvas>` and `<dialog>`
