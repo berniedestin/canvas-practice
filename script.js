@@ -61,6 +61,8 @@ window.addEventListener('resize',()=>{
     canvas.height = window.innerHeight;
     gravRender.width = window.innerWidth;
     gravRender.height = window.innerHeight;
+    sinRender.width = window.innerWidth;
+    sinRender.height = window.innerHeight;
     init();
     initBounce();
 });
@@ -267,6 +269,58 @@ function animateBounce(){
 
 }
 //animateBounce();
+// **********************************************************************************
+// sin waves
+
+const sinRender = document.getElementById('sinRender');
+sinRender.width = window.innerWidth;
+sinRender.height = window.innerHeight;
+const sinContext = sinRender.getContext('2d');
+const sinBtn = document.getElementById('sin');
+let showSinWave = false;
+sinBtn.addEventListener('click',()=>{
+    if(showSinWave){
+        sinRender.style.display = 'none';
+        sinBtn.innerText = 'Show Sin Wave';
+    }else{
+        sinRender.style.display = 'block';
+        sinBtn.innerText = 'Hide Sin Wave';
+    }
+    showSinWave = !showSinWave;
+    modalTest.close();
+
+});
+
+
+class SinWave{
+    constructor(x,y, length, amplitude, frequency){
+        this.x = x;
+        this.y = y;
+        this.length = length;
+        this.amplitude = amplitude;
+        this.frequency = frequency;
+        this.increment = frequency;
+        // color = rgb(244, 231, 219)
+        // colorWopacity = rgba(244, 231, 219, 0.1)
+
+    }
+    draw(){
+        sinContext.beginPath();
+        sinContext.moveTo(0,x);
+        for(let i = 0; i <= sinRender.width; i++ ){
+            sinContext.lineTo(i, Math.sin(i * this.length + this.increment) * this.amplitude);
+        }
+        sinContext.stroke();
+
+    }
+    update(){
+        this.increment += this.frequency;
+        this.draw();
+    }
+}
+let sinWave = new SinWave();
+
+
 
 // **********************************************************************************
 function animate(){
@@ -290,6 +344,11 @@ function animate(){
         //     context.fillRect(Math.random() * window.innerWidth,Math.random() * window.innerHeight,Math.random() * size,Math.random() * size);
         // }
     
+    }
+    if(showSinWave){
+        sinContext.fillStyle = rgba(244, 231, 219, 0.1);
+        sinContext.fillRect(0,0,sinRender.width, sinRender.height);
+        sinWave.update();
     }
     
 

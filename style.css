@@ -25,6 +25,13 @@ div#mainDisplay{
     display: none;
 
 }
+#sinRender{
+    z-index: -1;
+    position: fixed;
+    /* background-color: #f4e7db; */
+    display: none;
+    
+}
 
 #render{
     z-index: -1;
