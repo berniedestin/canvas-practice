@@ -63,6 +63,7 @@ window.addEventListener('resize',()=>{
     gravRender.height = window.innerHeight;
     sinRender.width = window.innerWidth;
     sinRender.height = window.innerHeight;
+    sinContext.lineWidth = 5;
     init();
     initBounce();
 });
@@ -276,6 +277,7 @@ const sinRender = document.getElementById('sinRender');
 sinRender.width = window.innerWidth;
 sinRender.height = window.innerHeight;
 const sinContext = sinRender.getContext('2d');
+sinContext.lineWidth = 5;
 const sinBtn = document.getElementById('sin');
 let showSinWave = false;
 sinBtn.addEventListener('click',()=>{
@@ -287,6 +289,7 @@ sinBtn.addEventListener('click',()=>{
         sinBtn.innerText = 'Hide Sin Wave';
     }
     showSinWave = !showSinWave;
+    sinContext.strokeStyle = colorPallet[Math.floor(Math.random()*colorPallet.length)];
     modalTest.close();
 
 });
@@ -296,8 +299,11 @@ class SinWave{
     constructor(x,y, length, amplitude, frequency){
         this.x = x;
         this.y = y;
+        this.dy = 2;
         this.length = length;
+        this.dL = .0001;
         this.amplitude = amplitude;
+        this.dA = 1;
         this.frequency = frequency;
         this.increment = frequency;
         // color = rgb(244, 231, 219)
@@ -306,19 +312,36 @@ class SinWave{
     }
     draw(){
         sinContext.beginPath();
-        sinContext.moveTo(0,x);
+        sinContext.moveTo(0,1000);
         for(let i = 0; i <= sinRender.width; i++ ){
-            sinContext.lineTo(i, Math.sin(i * this.length + this.increment) * this.amplitude);
+            sinContext.lineTo(i, this.y + Math.sin(i * this.length + this.increment) * this.amplitude);
         }
+        
         sinContext.stroke();
 
     }
     update(){
+        if(this.amplitude >= 300 || this.amplitude <= 50){
+            this.dA *= -1;
+        }
+        this.amplitude += this.dA;
+
+        if(this.length >= .01 || this.length <= .001){
+            this.dL *= -1;
+        }
+        this.length += this.dL;
+
+        if(this.y >= sinRender.height || this.y <= 0){
+            this.dy *= -1;
+        }
+        this.y += this.dy;
+
+
         this.increment += this.frequency;
         this.draw();
     }
 }
-let sinWave = new SinWave();
+let sinWave = new SinWave(0, sinRender.height / 2, 0.005, 200, 0.1);
 
 
 
@@ -346,8 +369,9 @@ function animate(){
     
     }
     if(showSinWave){
-        sinContext.fillStyle = rgba(244, 231, 219, 0.1);
-        sinContext.fillRect(0,0,sinRender.width, sinRender.height);
+        // sinContext.fillStyle = 'rgba(244, 231, 219, 0.1)';
+        // sinContext.fillRect(0,0,sinRender.width, sinRender.height);
+        sinContext.clearRect(0,0,sinRender.width, sinRender.height);
         sinWave.update();
     }
     
